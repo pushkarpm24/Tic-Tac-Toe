@@ -34,3 +34,17 @@ state=$((RANDOM%2))
 
 player=$( assignLetter )
 echo "player=$player"
+
+function whoPlays() {
+
+state=$((RANDOM%2))
+		if [[ $state -eq 1 ]]
+		then
+				echo "Player Play First.."
+		else
+				echo "Computer play First.."
+		fi
+}
+
+turn=$( whoPlays )
+echo $turn
