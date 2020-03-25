@@ -19,7 +19,7 @@ done
 			echo "---------------"
 
 }
-displayBoard
+
 
 function assignLetter() {
 state=$((RANDOM%2))
@@ -48,3 +48,5 @@ state=$((RANDOM%2))
 
 turn=$( whoPlays )
 echo $turn
+
+displayBoard
