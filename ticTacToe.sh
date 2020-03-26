@@ -160,7 +160,7 @@ function computerPlay(){
 	
 }
 function checkWonBlock(){
-	if [[ ${board[0,0]} == "X"  && ${board[0,1]} == "X" && ${board[0,2]} == "-" ]]; then
+if [[ ${board[0,0]} == "X"  && ${board[0,1]} == "X" && ${board[0,2]} == "-" ]]; then
 				board[0,2]=X
 			elif [[ ${board[1,0]} == "X"  && ${board[1,1]} == "X" && ${board[1,2]} == "-" ]]; then
 				board[1,2]=X
@@ -229,6 +229,55 @@ function checkWonBlock(){
 				board[1,1]=X
 
 			elif [[ ${board[0,2]} == "X"  && ${board[1,1]} == "-" && ${board[2,0]} == "X" ]]; then
+				board[1,1]=X
+			elif [[ ${board[0,0]} == "O"  && ${board[0,1]} == "O" && ${board[0,2]} == "-" ]]; then
+				board[0,2]=X
+			elif [[ ${board[1,0]} == "O"  && ${board[1,1]} == "O" && ${board[1,2]} == "-" ]]; then
+				board[1,2]=X
+			elif [[ ${board[2,0]} == "O"  && ${board[2,1]} == "O" && ${board[2,2]} == "-" ]]; then
+				board[2,2]=X
+			elif [[ ${board[0,0]} == "O"  && ${board[1,0]} == "O" && ${board[2,0]} == "-" ]]; then
+				board[2,0]=X
+			elif [[ ${board[0,1]} == "O"  && ${board[1,1]} == "O" && ${board[2,1]} == "-" ]]; then
+				board[2,1]=X
+			elif [[ ${board[0,2]} == "O"  && ${board[1,2]} == "O" && ${board[2,2]} == "-" ]]; then
+				board[2,2]=X
+			elif [[ ${board[0,0]} == "O"  && ${board[1,1]} == "O" && ${board[2,2]} == "-" ]]; then
+				board[2,2]=X
+			elif [[ ${board[0,2]} == "O"  && ${board[1,1]} == "O" && ${board[2,0]} == "-" ]]; then
+				board[2,0]=X
+			elif [[ ${board[0,0]} == "-"  && ${board[0,1]} == "O" && ${board[0,2]} == "O" ]]; then
+				board[0,0]=X
+			elif [[ ${board[1,0]} == "-"  && ${board[1,1]} == "O" && ${board[1,2]} == "O" ]]; then
+				board[1,0]=X
+			elif [[ ${board[2,0]} == "-"  && ${board[2,1]} == "O" && ${board[2,2]} == "O" ]]; then
+				board[2,0]=X
+
+			elif [[ ${board[0,0]} == "-"  && ${board[1,0]} == "O" && ${board[2,0]} == "O" ]]; then
+				board[0,0]=X
+			elif [[ ${board[0,1]} == "-"  && ${board[1,1]} == "O" && ${board[2,1]} == "O" ]]; then
+				board[0,1]=X
+			elif [[ ${board[0,2]} == "-"  && ${board[1,2]} == "O" && ${board[2,2]} == "O" ]]; then
+				board[0,2]=X
+			elif [[ ${board[0,0]} == "-"  && ${board[1,1]} == "O" && ${board[2,2]} == "O" ]]; then
+				board[0,0]=X
+			elif [[ ${board[0,2]} == "-"  && ${board[1,1]} == "O" && ${board[2,0]} == "O" ]]; then
+				board[0,2]=X
+			elif [[ ${board[0,0]} == "O"  && ${board[0,1]} == "-" && ${board[0,2]} == "O" ]]; then
+				board[0,1]=X
+			elif [[ ${board[1,0]} == "O"  && ${board[1,1]} == "-" && ${board[1,2]} == "O" ]]; then
+				board[1,1]=X
+			elif [[ ${board[2,0]} == "O"  && ${board[2,1]} == "-" && ${board[2,2]} == "O" ]]; then
+				board[2,1]=X
+			elif [[ ${board[0,0]} == "O"  && ${board[1,0]} == "-" && ${board[2,0]} == "O" ]]; then
+				board[1,0]=X
+			elif [[ ${board[0,1]} == "O"  && ${board[1,1]} == "-" && ${board[2,1]} == "O" ]]; then
+				board[1,1]=X
+			elif [[ ${board[0,2]} == "O"  && ${board[1,2]} == "-" && ${board[2,2]} == "O" ]]; then
+				board[1,2]=X
+			elif [[ ${board[0,0]} == "O"  && ${board[1,1]} == "-" && ${board[2,2]} == "O" ]]; then
+				board[1,1]=X
+			elif [[ ${board[0,2]} == "O"  && ${board[1,1]} == "-" && ${board[2,0]} == "O" ]]; then
 				board[1,1]=X
 			else
 				cNumber=$((RANDOM%8+1))
