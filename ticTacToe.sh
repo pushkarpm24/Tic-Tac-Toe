@@ -279,6 +279,15 @@ if [[ ${board[0,0]} == "X"  && ${board[0,1]} == "X" && ${board[0,2]} == "-" ]]; 
 				board[1,1]=X
 			elif [[ ${board[0,2]} == "O"  && ${board[1,1]} == "-" && ${board[2,0]} == "O" ]]; then
 				board[1,1]=X
+#corner
+			 elif [[ ${board[0,0]} == "-" ]]; then
+         	board[0,0]="X"
+         elif [[ ${board[0,2]} == "-" ]]; then
+               board[0,2]="X"
+         elif [[ ${board[2,0]} == "-" ]]; then
+         	board[2,0]="X"
+         elif [[ ${board[2,2]} == "-" ]]; then
+         	board[2,2]="X"
 			else
 				cNumber=$((RANDOM%8+1))
 				r=$(($cNumber/3))
