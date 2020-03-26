@@ -47,39 +47,22 @@ function assignLetter(){
 
 }
 
-function computerPlay(){
-	cNumber=$((RANDOM%8+1))
-	r=$(($cNumber/3))
-	c=$(($cNumber%3))
-	if [[ ${board[$r,$c]} == - ]]
-	then
-			putInCell $cNumber
-	elif [[ ${board[$r,$c]} == X ]]
-	then
-		computerPlay
-	elif [[ ${board[$r,$c]} == O ]]
-	then
-		computerPlay
-	fi
-}
-
 
 function turnDecider(){
-   while [[ $turn -le 9 && winChecker -eq 0 ]]
+  while [[ $turn -le 9 ]]
    do
       if [[ $turn%2 -eq 0 ]]
-      then
-			computerPlay
-         echo "Computers choice: $cNumber"
-#         putInCell $cNumber
-         ((turn++))
-		else
+		then
+				echo "Computers choice"
+				computerPlay
+      else
          echo "Players turn"
          read -p "Enter your choice: " ch
          putInCell $ch
-         ((turn++))
-	   fi
+      fi
+	((turn++))
    done
+
 }
 
 function putInCell(){
@@ -169,6 +152,96 @@ function isWon(){
    then
       printf "Match is tie: "
    fi
+
+}
+function computerPlay(){
+	checkWonBlock
+	return
+	
+}
+function checkWonBlock(){
+	if [[ ${board[0,0]} == "X"  && ${board[0,1]} == "X" && ${board[0,2]} == "-" ]]; then
+				board[0,2]=X
+			elif [[ ${board[1,0]} == "X"  && ${board[1,1]} == "X" && ${board[1,2]} == "-" ]]; then
+				board[1,2]=X
+
+			elif [[ ${board[2,0]} == "X"  && ${board[2,1]} == "X" && ${board[2,2]} == "-" ]]; then
+				board[2,2]=X
+
+			elif [[ ${board[0,0]} == "X"  && ${board[1,0]} == "X" && ${board[2,0]} == "-" ]]; then
+				board[2,0]=X
+
+			elif [[ ${board[0,1]} == "X"  && ${board[1,1]} == "X" && ${board[2,1]} == "-" ]]; then
+				board[2,1]=X
+
+			elif [[ ${board[0,2]} == "X"  && ${board[1,2]} == "X" && ${board[2,2]} == "-" ]]; then
+			board[2,2]=X
+
+			elif [[ ${board[0,0]} == "X"  && ${board[1,1]} == "X" && ${board[2,2]} == "-" ]]; then
+				board[2,2]=X
+
+			elif [[ ${board[0,2]} == "X"  && ${board[1,1]} == "X" && ${board[2,0]} == "-" ]]; then
+				board[2,0]=X
+
+			elif [[ ${board[0,0]} == "-"  && ${board[0,1]} == "X" && ${board[0,2]} == "X" ]]; then
+				board[0,0]=X
+
+			elif [[ ${board[1,0]} == "-"  && ${board[1,1]} == "X" && ${board[1,2]} == "X" ]]; then
+				board[1,0]=X
+
+			elif [[ ${board[2,0]} == "-"  && ${board[2,1]} == "X" && ${board[2,2]} == "X" ]]; then
+				board[2,0]=X
+
+
+			elif [[ ${board[0,0]} == "-"  && ${board[1,0]} == "X" && ${board[2,0]} == "X" ]]; then
+				board[0,0]=X
+
+			elif [[ ${board[0,1]} == "-"  && ${board[1,1]} == "X" && ${board[2,1]} == "X" ]]; then
+				board[0,1]=X
+
+			elif [[ ${board[0,2]} == "-"  && ${board[1,2]} == "X" && ${board[2,2]} == "X" ]]; then
+				board[0,2]=X
+
+			elif [[ ${board[0,0]} == "-"  && ${board[1,1]} == "X" && ${board[2,2]} == "X" ]]; then
+				board[0,0]=X
+
+			elif [[ ${board[0,2]} == "-"  && ${board[1,1]} == "X" && ${board[2,0]} == "X" ]]; then
+				board[0,2]=X
+
+			elif [[ ${board[0,0]} == "X"  && ${board[0,1]} == "-" && ${board[0,2]} == "X" ]]; then
+				board[0,1]=X
+			elif [[ ${board[1,0]} == "X"  && ${board[1,1]} == "-" && ${board[1,2]} == "X" ]]; then
+				board[1,1]=X
+
+			elif [[ ${board[2,0]} == "X"  && ${board[2,1]} == "-" && ${board[2,2]} == "X" ]]; then
+				board[2,1]=X
+
+			elif [[ ${board[0,0]} == "X"  && ${board[1,0]} == "-" && ${board[2,0]} == "X" ]]; then
+				board[1,0]=X
+
+			elif [[ ${board[0,1]} == "X"  && ${board[1,1]} == "-" && ${board[2,1]} == "X" ]]; then
+				board[1,1]=X
+
+			elif [[ ${board[0,2]} == "X"  && ${board[1,2]} == "-" && ${board[2,2]} == "X" ]]; then
+				board[1,2]=X
+
+			elif [[ ${board[0,0]} == "X"  && ${board[1,1]} == "-" && ${board[2,2]} == "X" ]]; then
+				board[1,1]=X
+
+			elif [[ ${board[0,2]} == "X"  && ${board[1,1]} == "-" && ${board[2,0]} == "X" ]]; then
+				board[1,1]=X
+			else
+				cNumber=$((RANDOM%8+1))
+				r=$(($cNumber/3))
+				c=$(($cNumber%3))
+			if [[ ${board[$r,$c]} == - ]]
+		then
+			putInCell $cNumber
+		fi
+		fi
+
+displayBoard
+isWon
 
 }
 #toss
