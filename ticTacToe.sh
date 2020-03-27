@@ -5,310 +5,293 @@
 # Date -> 23/03/2020
 
 
+emptyFlag=0
 ROW=3
 COLUMN=3
-player="P"
+player="O"
 turn=1
+Computer="X"
+playerTwo="O"
 winChecker=0
-#cNumber=0
+temp=0
 
 declare -A board
-function initializeBoard() {    #function to create board
+function initializeBoard() {          #function to create board
 	for(( r = 0; r < $ROW; r++ ))
 	do
-		for((	c = 0; c < $COLUMN; c++ ))
-		do
-				board[$r,$c]="-"
-		done
-		done
+			for((	c = 0; c < $COLUMN; c++ ))
+			do
+					board[$r,$c]="-"
+			done
+	done
+
 }
 
-function displayBoard(){  #function to displayboard
+
+function displayBoard()	{       #function to displayboard
 	for((r=0;r<$ROW;r++))
 	do
-		echo "---------------"
+			echo "---------------"
 		for(( c=0; c<$COLUMN; c++))
 		do
-			echo -n "| ${board[$r,$c]} |"
+				echo -n "| ${board[$r,$c]} |"
 		done
-		printf "\n"
+				printf "\n"
 	done
-		echo "---------------"
+				echo "---------------"
 
 }
 
-function assignLetter(){
+
+function assignLetter() {
+
 	if [[ $turn%2 -eq 0 ]]
 	then
-			player="X"
+			player=$Computer
 	else
-			player="O"
+			player=$playerTwo
 	fi
 
 }
 
 
-function turnDecider(){
-  while [[ $turn -le 9 ]]
-   do
-      if [[ $turn%2 -eq 0 ]]
+function toss() {
+
+	if [[ $((RANDOM%2)) -eq 0 ]]
+	then
+			temp=1
+	else
+			temp=0
+	fi
+}
+
+
+function turnDecider()	{
+
+ 	while [[ $turn -le 9 && winChecker -eq 0 ]]
+  	do
+		if [[ $turn%2 -eq $temp ]]
 		then
-				echo "Computers choice"
+				echo "Players turn"
+				read -p "Enter your choice: " ch
+				putInCell $ch
+		else
+				echo "Computers Turn"
 				computerPlay
-      else
-         echo "Players turn"
-         read -p "Enter your choice: " ch
-         putInCell $ch
-      fi
-	((turn++))
-   done
+
+		fi
+				((turn++))
+	done
 
 }
 
-function putInCell(){
+function putInCell() {
+
 		choice=$1
-		assignLetter
-		case $choice in
-						0)
-							board[0,0]=$player;;
-						1)
-                     board[0,1]=$player;;
-						2)
-                     board[0,2]=$player;;
-						3)
-                     board[1,0]=$player;;
-						4)
-                     board[1,1]=$player;;
-						5)
-                     board[1,2]=$player;;
-						6)
-                     board[2,0]=$player;;
-						7)
-                     board[2,1]=$player;;
-						8)
-                     board[2,2]=$player;;
-						*)
-							printf "Associative key not find "
-							((turn--))
-		esac
-	displayBoard
-	isWon
+		r=$(($choice/3))
+		c=$(($choice%3))
+		board[$r,$c]=$player
+		displayBoard
+		isWon
 }
 
 function isWon(){
-	if [[ ${board[0,0]} == "X" && ${board[0,1]} == "X" && ${board[0,2]} == "X" ]]
+	if [[ ${board[0,0]} == "$Computer" && ${board[0,1]} == "$Computer" && ${board[0,2]} == "$Computer" ]]
 	then
 		winChecker=1
-	elif [[ ${board[1,0]} == "X" && ${board[1,1]} == "X" && ${board[1,2]} == "X" ]]
-	then 
-		winChecker=1
-	elif [[ ${board[2,0]} == "X" && ${board[2,1]} == "X" && ${board[2,2]} == "X" ]]
+	elif [[ ${board[1,0]} == "$Computer" && ${board[1,1]} == "$Computer" && ${board[1,2]} == "$Computer" ]]
 	then
 		winChecker=1
-	elif [[ ${board[0,0]} == "O" && ${board[0,1]} == "O" && ${board[0,2]} == "O" ]]
-   then
-      winChecker=1
-   elif [[ ${board[1,0]} == "O" && ${board[1,1]} == "O" && ${board[1,2]} == "O" ]]
-   then 
-      winChecker=1
-   elif [[ ${board[2,0]} == "O" && ${board[2,1]} == "O" && ${board[2,2]} == "O" ]]
-   then
-      winChecker=1
-	elif [[ ${board[0,0]} == "X" && ${board[1,0]} == "X" && ${board[2,0]} == "X" ]]
+	elif [[ ${board[2,0]} == "$Computer" && ${board[2,1]} == "$Computer" && ${board[2,2]} == "$Computer" ]]
 	then
 		winChecker=1
-	elif [[ ${board[0,1]} == "X" && ${board[1,1]} == "X" && ${board[2,1]} == "X" ]]
+	elif [[ ${board[0,0]} == "$playerTwo" && ${board[0,1]} == "$playerTwo" && ${board[0,2]} == "$playerTwo" ]]
+   then
+      winChecker=1
+   elif [[ ${board[1,0]} == "$playerTwo" && ${board[1,1]} == "$playerTwo" && ${board[1,2]} == "$playerTwo" ]]
+   then
+      winChecker=1
+   elif [[ ${board[2,0]} == "$playerTwo" && ${board[2,1]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]
+   then
+      winChecker=1
+	elif [[ ${board[0,0]} == "$Computer" && ${board[1,0]} == "$Computer" && ${board[2,0]} == "$Computer" ]]
 	then
 		winChecker=1
-	elif [[ ${board[0,2]} == "X" && ${board[1,2]} == "X" && ${board[2,2]} == "X" ]]
+	elif [[ ${board[0,1]} == "$Computer" && ${board[1,1]} == "$Computer" && ${board[2,1]} == "$Computer" ]]
 	then
 		winChecker=1
-	elif [[ ${board[0,0]} == "O" && ${board[1,0]} == "O" && ${board[2,0]} == "O" ]]
-   then
-      winChecker=1
-   elif [[ ${board[0,1]} == "O" && ${board[1,1]} == "O" && ${board[2,1]} == "O" ]]
-   then
-      winChecker=1
-   elif [[ ${board[0,2]} == "O" && ${board[1,2]} == "O" && ${board[2,2]} == "O" ]]
+	elif [[ ${board[0,2]} == "$Computer" && ${board[1,2]} == "$Computer" && ${board[2,2]} == "$Computer" ]]
 	then
 		winChecker=1
-	elif [[ ${board[0,0]} == "O" && ${board[1,1]} == "O" && ${board[2,2]} == "O" ]]
+	elif [[ ${board[0,0]} == "$playerTwo" && ${board[1,0]} == "$playerTwo" && ${board[2,0]} == "$playerTwo" ]]
    then
       winChecker=1
-	elif [[ ${board[0,0]} == "X" && ${board[1,1]} == "X" && ${board[2,2]} == "X" ]]
+   elif [[ ${board[0,1]} == "$playerTwo" && ${board[1,1]} == "$playerTwo" && ${board[2,1]} == "$playerTwo" ]]
    then
       winChecker=1
-	elif [[ ${board[0,2]} == "O" && ${board[1,1]} == "O" && ${board[2,0]} == "O" ]]
+   elif [[ ${board[0,2]} == "$playerTwo" && ${board[1,2]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]
+	then
+		winChecker=1
+	elif [[ ${board[0,0]} == "$playerTwo" && ${board[1,1]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]
    then
       winChecker=1
-	elif [[ ${board[0,2]} == "X" && ${board[1,1]} == "X" && ${board[2,0]} == "X" ]]
+	elif [[ ${board[0,0]} == "$Computer" && ${board[1,1]} == "$Computer" && ${board[2,2]} == "$Computer" ]]
+   then
+      winChecker=1
+	elif [[ ${board[0,2]} == "$playerTwo" && ${board[1,1]} == "$playerTwo" && ${board[2,0]} == "$playerTwo" ]]
+   then
+      winChecker=1
+	elif [[ ${board[0,2]} == "$Computer" && ${board[1,1]} == "$Computer" && ${board[2,0]} == "$Computer" ]]
    then
       winChecker=1
 	fi
 	if [[ $winChecker -eq 1 ]]
-   then
-      printf "player $player has won the game "
-   elif [[ $turn -ge 9 ]]
-   then
-      printf "Match is tie: "
-   fi
-
+  	then
+			if [[ $player -eq $Computer ]]
+			then
+					printf "\n Computer has Won "
+			else
+					printf "\n You have Won the game "
+			fi
+			elif [[ $turn -ge 9 ]]
+			then
+					printf "Match is tie: "
+			fi
 }
 function computerPlay(){
 	checkWonBlock
 	return
-	
+
 }
-function checkWonBlock(){
-if [[ ${board[0,0]} == "X"  && ${board[0,1]} == "X" && ${board[0,2]} == "-" ]]; then
+function checkWonBlock() {
+			if [[ ${board[0,0]} == "$Computer"  && ${board[0,1]} == "$Computer" && ${board[0,2]} == "-" ]]; then
 				board[0,2]=X
-			elif [[ ${board[1,0]} == "X"  && ${board[1,1]} == "X" && ${board[1,2]} == "-" ]]; then
+			elif [[ ${board[1,0]} == "$Computer"  && ${board[1,1]} == "$Computer" && ${board[1,2]} == "-" ]]; then
 				board[1,2]=X
-
-			elif [[ ${board[2,0]} == "X"  && ${board[2,1]} == "X" && ${board[2,2]} == "-" ]]; then
+			elif [[ ${board[2,0]} == "$Computer"  && ${board[2,1]} == "$Computer" && ${board[2,2]} == "-" ]]; then
 				board[2,2]=X
-
-			elif [[ ${board[0,0]} == "X"  && ${board[1,0]} == "X" && ${board[2,0]} == "-" ]]; then
+			elif [[ ${board[0,0]} == "$Computer"  && ${board[1,0]} == "$Computer" && ${board[2,0]} == "-" ]]; then
 				board[2,0]=X
-
-			elif [[ ${board[0,1]} == "X"  && ${board[1,1]} == "X" && ${board[2,1]} == "-" ]]; then
+			elif [[ ${board[0,1]} == "$Computer"  && ${board[1,1]} == "$Computer" && ${board[2,1]} == "-" ]]; then
 				board[2,1]=X
-
-			elif [[ ${board[0,2]} == "X"  && ${board[1,2]} == "X" && ${board[2,2]} == "-" ]]; then
-			board[2,2]=X
-
-			elif [[ ${board[0,0]} == "X"  && ${board[1,1]} == "X" && ${board[2,2]} == "-" ]]; then
+			elif [[ ${board[0,2]} == "$Computer"  && ${board[1,2]} == "$Computer" && ${board[2,2]} == "-" ]]; then
 				board[2,2]=X
-
-			elif [[ ${board[0,2]} == "X"  && ${board[1,1]} == "X" && ${board[2,0]} == "-" ]]; then
+			elif [[ ${board[0,0]} == "$Computer"  && ${board[1,1]} == "$Computer" && ${board[2,2]} == "-" ]]; then
+				board[2,2]=X
+			elif [[ ${board[0,2]} == "$Computer"  && ${board[1,1]} == "$Computer" && ${board[2,0]} == "-" ]]; then
 				board[2,0]=X
-
-			elif [[ ${board[0,0]} == "-"  && ${board[0,1]} == "X" && ${board[0,2]} == "X" ]]; then
+			elif [[ ${board[0,0]} == "-"  && ${board[0,1]} == "$Computer" && ${board[0,2]} == "$Computer" ]]; then
 				board[0,0]=X
-
-			elif [[ ${board[1,0]} == "-"  && ${board[1,1]} == "X" && ${board[1,2]} == "X" ]]; then
+			elif [[ ${board[1,0]} == "-"  && ${board[1,1]} == "$Computer" && ${board[1,2]} == "$Computer" ]]; then
 				board[1,0]=X
-
-			elif [[ ${board[2,0]} == "-"  && ${board[2,1]} == "X" && ${board[2,2]} == "X" ]]; then
+			elif [[ ${board[2,0]} == "-"  && ${board[2,1]} == "$Computer" && ${board[2,2]} == "$Computer" ]]; then
 				board[2,0]=X
-
-
-			elif [[ ${board[0,0]} == "-"  && ${board[1,0]} == "X" && ${board[2,0]} == "X" ]]; then
+			elif [[ ${board[0,0]} == "-"  && ${board[1,0]} == "$Computer" && ${board[2,0]} == "$Computer" ]]; then
 				board[0,0]=X
-
-			elif [[ ${board[0,1]} == "-"  && ${board[1,1]} == "X" && ${board[2,1]} == "X" ]]; then
+			elif [[ ${board[0,1]} == "-"  && ${board[1,1]} == "$Computer" && ${board[2,1]} == "$Computer" ]]; then
 				board[0,1]=X
-
-			elif [[ ${board[0,2]} == "-"  && ${board[1,2]} == "X" && ${board[2,2]} == "X" ]]; then
+			elif [[ ${board[0,2]} == "-"  && ${board[1,2]} == "$Computer" && ${board[2,2]} == "$Computer" ]]; then
 				board[0,2]=X
-
-			elif [[ ${board[0,0]} == "-"  && ${board[1,1]} == "X" && ${board[2,2]} == "X" ]]; then
+			elif [[ ${board[0,0]} == "-"  && ${board[1,1]} == "$Computer" && ${board[2,2]} == "$Computer" ]]; then
 				board[0,0]=X
-
-			elif [[ ${board[0,2]} == "-"  && ${board[1,1]} == "X" && ${board[2,0]} == "X" ]]; then
+			elif [[ ${board[0,2]} == "-"  && ${board[1,1]} == "$Computer" && ${board[2,0]} == "$Computer" ]]; then
 				board[0,2]=X
-
-			elif [[ ${board[0,0]} == "X"  && ${board[0,1]} == "-" && ${board[0,2]} == "X" ]]; then
+			elif [[ ${board[0,0]} == "$Computer"  && ${board[0,1]} == "-" && ${board[0,2]} == "$Computer" ]]; then
 				board[0,1]=X
-			elif [[ ${board[1,0]} == "X"  && ${board[1,1]} == "-" && ${board[1,2]} == "X" ]]; then
+			elif [[ ${board[1,0]} == "$Computer"  && ${board[1,1]} == "-" && ${board[1,2]} == "$Computer" ]]; then
 				board[1,1]=X
-
-			elif [[ ${board[2,0]} == "X"  && ${board[2,1]} == "-" && ${board[2,2]} == "X" ]]; then
+			elif [[ ${board[2,0]} == "$Computer"  && ${board[2,1]} == "-" && ${board[2,2]} == "$Computer" ]]; then
 				board[2,1]=X
-
-			elif [[ ${board[0,0]} == "X"  && ${board[1,0]} == "-" && ${board[2,0]} == "X" ]]; then
+			elif [[ ${board[0,0]} == "$Computer"  && ${board[1,0]} == "-" && ${board[2,0]} == "$Computer" ]]; then
 				board[1,0]=X
-
-			elif [[ ${board[0,1]} == "X"  && ${board[1,1]} == "-" && ${board[2,1]} == "X" ]]; then
+			elif [[ ${board[0,1]} == "$Computer"  && ${board[1,1]} == "-" && ${board[2,1]} == "$Computer" ]]; then
 				board[1,1]=X
-
-			elif [[ ${board[0,2]} == "X"  && ${board[1,2]} == "-" && ${board[2,2]} == "X" ]]; then
+			elif [[ ${board[0,2]} == "$Computer"  && ${board[1,2]} == "-" && ${board[2,2]} == "$Computer" ]]; then
 				board[1,2]=X
-
-			elif [[ ${board[0,0]} == "X"  && ${board[1,1]} == "-" && ${board[2,2]} == "X" ]]; then
+			elif [[ ${board[0,0]} == "$Computer"  && ${board[1,1]} == "-" && ${board[2,2]} == "$Computer" ]]; then
+				board[1,1]=X
+			elif [[ ${board[0,2]} == "$Computer"  && ${board[1,1]} == "-" && ${board[2,0]} == "$Computer" ]]; then
 				board[1,1]=X
 
-			elif [[ ${board[0,2]} == "X"  && ${board[1,1]} == "-" && ${board[2,0]} == "X" ]]; then
-				board[1,1]=X
-			elif [[ ${board[0,0]} == "O"  && ${board[0,1]} == "O" && ${board[0,2]} == "-" ]]; then
+
+			elif [[ ${board[0,0]} == "$playerTwo"  && ${board[0,1]} == "$playerTwo" && ${board[0,2]} == "-" ]]; then
 				board[0,2]=X
-			elif [[ ${board[1,0]} == "O"  && ${board[1,1]} == "O" && ${board[1,2]} == "-" ]]; then
+			elif [[ ${board[1,0]} == "$playerTwo"  && ${board[1,1]} == "$playerTwo" && ${board[1,2]} == "-" ]]; then
 				board[1,2]=X
-			elif [[ ${board[2,0]} == "O"  && ${board[2,1]} == "O" && ${board[2,2]} == "-" ]]; then
+			elif [[ ${board[2,0]} == "$playerTwo"  && ${board[2,1]} == "$playerTwo" && ${board[2,2]} == "-" ]]; then
 				board[2,2]=X
-			elif [[ ${board[0,0]} == "O"  && ${board[1,0]} == "O" && ${board[2,0]} == "-" ]]; then
+			elif [[ ${board[0,0]} == "$playerTwo"  && ${board[1,0]} == "$playerTwo" && ${board[2,0]} == "-" ]]; then
 				board[2,0]=X
-			elif [[ ${board[0,1]} == "O"  && ${board[1,1]} == "O" && ${board[2,1]} == "-" ]]; then
+			elif [[ ${board[0,1]} == "$playerTwo"  && ${board[1,1]} == "$playerTwo" && ${board[2,1]} == "-" ]]; then
 				board[2,1]=X
-			elif [[ ${board[0,2]} == "O"  && ${board[1,2]} == "O" && ${board[2,2]} == "-" ]]; then
+			elif [[ ${board[0,2]} == "$playerTwo"  && ${board[1,2]} == "$playerTwo" && ${board[2,2]} == "-" ]]; then
 				board[2,2]=X
-			elif [[ ${board[0,0]} == "O"  && ${board[1,1]} == "O" && ${board[2,2]} == "-" ]]; then
+			elif [[ ${board[0,0]} == "$playerTwo"  && ${board[1,1]} == "$playerTwo" && ${board[2,2]} == "-" ]]; then
 				board[2,2]=X
-			elif [[ ${board[0,2]} == "O"  && ${board[1,1]} == "O" && ${board[2,0]} == "-" ]]; then
+			elif [[ ${board[0,2]} == "$playerTwo"  && ${board[1,1]} == "$playerTwo" && ${board[2,0]} == "-" ]]; then
 				board[2,0]=X
-			elif [[ ${board[0,0]} == "-"  && ${board[0,1]} == "O" && ${board[0,2]} == "O" ]]; then
+			elif [[ ${board[0,0]} == "-"  && ${board[0,1]} == "$playerTwo" && ${board[0,2]} == "$playerTwo" ]]; then
 				board[0,0]=X
-			elif [[ ${board[1,0]} == "-"  && ${board[1,1]} == "O" && ${board[1,2]} == "O" ]]; then
+			elif [[ ${board[1,0]} == "-"  && ${board[1,1]} == "$playerTwo" && ${board[1,2]} == "$playerTwo" ]]; then
 				board[1,0]=X
-			elif [[ ${board[2,0]} == "-"  && ${board[2,1]} == "O" && ${board[2,2]} == "O" ]]; then
+			elif [[ ${board[2,0]} == "-"  && ${board[2,1]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]; then
 				board[2,0]=X
-
-			elif [[ ${board[0,0]} == "-"  && ${board[1,0]} == "O" && ${board[2,0]} == "O" ]]; then
+			elif [[ ${board[0,0]} == "-"  && ${board[1,0]} == "$playerTwo" && ${board[2,0]} == "$playerTwo" ]]; then
 				board[0,0]=X
-			elif [[ ${board[0,1]} == "-"  && ${board[1,1]} == "O" && ${board[2,1]} == "O" ]]; then
+			elif [[ ${board[0,1]} == "-"  && ${board[1,1]} == "$playerTwo" && ${board[2,1]} == "$playerTwo" ]]; then
 				board[0,1]=X
-			elif [[ ${board[0,2]} == "-"  && ${board[1,2]} == "O" && ${board[2,2]} == "O" ]]; then
+			elif [[ ${board[0,2]} == "-"  && ${board[1,2]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]; then
 				board[0,2]=X
-			elif [[ ${board[0,0]} == "-"  && ${board[1,1]} == "O" && ${board[2,2]} == "O" ]]; then
+			elif [[ ${board[0,0]} == "-"  && ${board[1,1]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]; then
 				board[0,0]=X
-			elif [[ ${board[0,2]} == "-"  && ${board[1,1]} == "O" && ${board[2,0]} == "O" ]]; then
+			elif [[ ${board[0,2]} == "-"  && ${board[1,1]} == "$playerTwo" && ${board[2,0]} == "$playerTwo" ]]; then
 				board[0,2]=X
-			elif [[ ${board[0,0]} == "O"  && ${board[0,1]} == "-" && ${board[0,2]} == "O" ]]; then
+			elif [[ ${board[0,0]} == "$playerTwo"  && ${board[0,1]} == "-" && ${board[0,2]} == "$playerTwo" ]]; then
 				board[0,1]=X
-			elif [[ ${board[1,0]} == "O"  && ${board[1,1]} == "-" && ${board[1,2]} == "O" ]]; then
+			elif [[ ${board[1,0]} == "$playerTwo"  && ${board[1,1]} == "-" && ${board[1,2]} == "$playerTwo" ]]; then
 				board[1,1]=X
-			elif [[ ${board[2,0]} == "O"  && ${board[2,1]} == "-" && ${board[2,2]} == "O" ]]; then
+			elif [[ ${board[2,0]} == "$playerTwo"  && ${board[2,1]} == "-" && ${board[2,2]} == "$playerTwo" ]]; then
 				board[2,1]=X
-			elif [[ ${board[0,0]} == "O"  && ${board[1,0]} == "-" && ${board[2,0]} == "O" ]]; then
+			elif [[ ${board[0,0]} == "$playerTwo"  && ${board[1,0]} == "-" && ${board[2,0]} == "$playerTwo" ]]; then
 				board[1,0]=X
-			elif [[ ${board[0,1]} == "O"  && ${board[1,1]} == "-" && ${board[2,1]} == "O" ]]; then
+			elif [[ ${board[0,1]} == "$playerTwo"  && ${board[1,1]} == "-" && ${board[2,1]} == "$playerTwo" ]]; then
 				board[1,1]=X
-			elif [[ ${board[0,2]} == "O"  && ${board[1,2]} == "-" && ${board[2,2]} == "O" ]]; then
+			elif [[ ${board[0,2]} == "$playerTwo"  && ${board[1,2]} == "-" && ${board[2,2]} == "$playerTwo" ]]; then
 				board[1,2]=X
-			elif [[ ${board[0,0]} == "O"  && ${board[1,1]} == "-" && ${board[2,2]} == "O" ]]; then
+			elif [[ ${board[0,0]} == "$playerTwo"  && ${board[1,1]} == "-" && ${board[2,2]} == "$playerTwo" ]]; then
 				board[1,1]=X
-			elif [[ ${board[0,2]} == "O"  && ${board[1,1]} == "-" && ${board[2,0]} == "O" ]]; then
+			elif [[ ${board[0,2]} == "$playerTwo"  && ${board[1,1]} == "-" && ${board[2,0]} == "$playerTwo" ]]; then
 				board[1,1]=X
-#corner
-			 elif [[ ${board[0,0]} == "-" ]]; then
-         	board[0,0]="X"
-         elif [[ ${board[0,2]} == "-" ]]; then
-               board[0,2]="X"
-         elif [[ ${board[2,0]} == "-" ]]; then
-         	board[2,0]="X"
-         elif [[ ${board[2,2]} == "-" ]]; then
-         	board[2,2]="X"
-# Center
-
-         elif [[ ${board[1,1]} == "-" ]]; then
-               board[1,1]="X"
-# Sides
-         elif [[ ${board[0,1]} == "-" ]]; then
-               board[0,1]="X"
-         elif [[ ${board[1,0]} == "-" ]]; then
-               board[1,0]="X"
-         elif [[ ${board[1,2]} == "-" ]]; then
-               board[1,2]="X"
-         elif [[ ${board[2,1]} == "-" ]]; then
-               board[2,1]="X"
-		fi
+			#corner
+			elif [[ ${board[0,0]} == "-" ]]; then
+					board[0,0]="X"
+			elif [[ ${board[0,2]} == "-" ]]; then
+					board[0,2]="X"
+			elif [[ ${board[2,0]} == "-" ]]; then
+					board[2,0]="X"
+			elif [[ ${board[2,2]} == "-" ]]; then
+					board[2,2]="X"
+			# Center
+			elif [[ ${board[1,1]} == "-" ]]; then
+					board[1,1]="X"
+			# Sides
+			elif [[ ${board[0,1]} == "-" ]]; then
+					board[0,1]="X"
+			elif [[ ${board[1,0]} == "-" ]]; then
+					board[1,0]="X"
+			elif [[ ${board[1,2]} == "-" ]]; then
+					board[1,2]="X"
+			elif [[ ${board[2,1]} == "-" ]]; then
+					board[2,1]="X"
+	fi
 
 displayBoard
 isWon
 
 }
-#toss
+
 initializeBoard
 displayBoard
+toss
 turnDecider
 
