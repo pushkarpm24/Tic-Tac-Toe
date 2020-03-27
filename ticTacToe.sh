@@ -42,19 +42,6 @@ function displayBoard()	{       #function to displayboard
 
 }
 
-
-function assignLetter() {
-
-	if [[ $turn%2 -eq 0 ]]
-	then
-			player=$Computer
-	else
-			player=$playerTwo
-	fi
-
-}
-
-
 function toss() {
 
 	if [[ $((RANDOM%2)) -eq 0 ]]
@@ -106,14 +93,14 @@ function isWon(){
 	then
 		winChecker=1
 	elif [[ ${board[0,0]} == "$playerTwo" && ${board[0,1]} == "$playerTwo" && ${board[0,2]} == "$playerTwo" ]]
-   then
-      winChecker=1
-   elif [[ ${board[1,0]} == "$playerTwo" && ${board[1,1]} == "$playerTwo" && ${board[1,2]} == "$playerTwo" ]]
-   then
-      winChecker=1
-   elif [[ ${board[2,0]} == "$playerTwo" && ${board[2,1]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]
-   then
-      winChecker=1
+   	then
+      		winChecker=1
+   	elif [[ ${board[1,0]} == "$playerTwo" && ${board[1,1]} == "$playerTwo" && ${board[1,2]} == "$playerTwo" ]]
+   	then
+      		winChecker=1
+   	elif [[ ${board[2,0]} == "$playerTwo" && ${board[2,1]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]
+   	then
+      		winChecker=1
 	elif [[ ${board[0,0]} == "$Computer" && ${board[1,0]} == "$Computer" && ${board[2,0]} == "$Computer" ]]
 	then
 		winChecker=1
@@ -124,26 +111,26 @@ function isWon(){
 	then
 		winChecker=1
 	elif [[ ${board[0,0]} == "$playerTwo" && ${board[1,0]} == "$playerTwo" && ${board[2,0]} == "$playerTwo" ]]
-   then
-      winChecker=1
-   elif [[ ${board[0,1]} == "$playerTwo" && ${board[1,1]} == "$playerTwo" && ${board[2,1]} == "$playerTwo" ]]
-   then
-      winChecker=1
-   elif [[ ${board[0,2]} == "$playerTwo" && ${board[1,2]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]
+   	then
+      		winChecker=1
+   	elif [[ ${board[0,1]} == "$playerTwo" && ${board[1,1]} == "$playerTwo" && ${board[2,1]} == "$playerTwo" ]]
+   	then
+      		winChecker=1
+   	elif [[ ${board[0,2]} == "$playerTwo" && ${board[1,2]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]
 	then
 		winChecker=1
 	elif [[ ${board[0,0]} == "$playerTwo" && ${board[1,1]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]
-   then
-      winChecker=1
+   	then
+      		winChecker=1
 	elif [[ ${board[0,0]} == "$Computer" && ${board[1,1]} == "$Computer" && ${board[2,2]} == "$Computer" ]]
-   then
-      winChecker=1
+   	then
+      		winChecker=1
 	elif [[ ${board[0,2]} == "$playerTwo" && ${board[1,1]} == "$playerTwo" && ${board[2,0]} == "$playerTwo" ]]
-   then
-      winChecker=1
+   	then
+      		winChecker=1
 	elif [[ ${board[0,2]} == "$Computer" && ${board[1,1]} == "$Computer" && ${board[2,0]} == "$Computer" ]]
-   then
-      winChecker=1
+   	then
+      		winChecker=1
 	fi
 	if [[ $winChecker -eq 1 ]]
   	then
